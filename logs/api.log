@@ -1,2 +1,0 @@
-2022-07-19 21:43:50,287 DEBUG    views        initadmin.py handle       19   Congratulations, Admin Account is created!
-2022-07-19 22:59:28,064 DEBUG    api          views.py     post         63   update poll answers for user kirill and poll with id 1

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block poll %}
+
+<a style="margin-left:60px;" class="btn btn-secondary btn-sm mb-3" href="{% url 'polls' %}">Назад к опросам</a>
+<h1 class="text-left mb-3" style="margin-left:60px;">{{ poll.title }}</h1>
+{% if passed %}
+    <div class="alert alert-warning alert-dismissible fade show col-md-4 offset-md-1" role="alert">
+                <p style="margin-left:60px;"><strong>Внимание!</strong> Вы проходите данный опрос повторно, в связи с чем Ваши результаты будут заменены, а вознаграждение начислено не будет!</p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+{% endif %}
+    {% for question in poll.questions.all %}
+        <div class="question">
+        <input type="hidden" class="question" value="{{ question.id }}"/>
+        <h3 style="margin-left:80px;">{{ question.title }}</h3>
+        {% for choice in question.choices.all %}
+            <div class="form-check" style="margin-left:120px;">
+                <label><input required type="radio" name="group{{ question.id }}" value="{{ choice.id }}" class="form-check-input"/>{{ choice.text }}</label>
+            </div>
+        {% endfor %}
+        <hr>
+        </div>
+    {% endfor %}
+    <input style="margin-left:100px;" type="submit" value="Отправить!" class="btn btn-success btn-lg btn-block mt-4"/>
+    <script src="{% static 'js/backend/backend.js' %}"></script>
+    <script src="{% static 'js/backend/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'js/set_poll_answers.js' %}"></script>
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block players %}
+    <div class="content">
+
+    <div>
+      <h2 class="mb-5 text-left" style="margin-left:60px;">Список пользователей, проходивших опросы</h2>
+      <div class="table-responsive players d-none">
+
+        <table class="table custom-table">
+          <thead>
+            <tr>
+              <th scope="col">Имя пользователя</th>
+              <th scope="col">Количество пройденных опросов</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+    <template id="reminderTemplate">
+          <tr>
+            <td>
+              <div style="margin-left:120px;margin-right:120px;display: flex" class="username">–</div>
+            </td>
+            <td>
+              <div style="margin-left:120px;margin-right:120px;" class="polls">–</div>
+            </td>
+          </tr>
+</template>
+
+    <script src="{% static 'js/backend/backend.js' %}"></script>
+    <script src={% static 'js/players_list.js' %}></script>
+    <script src="{% static 'js/players_templates.js' %}"></script>
+
+{% endblock %}

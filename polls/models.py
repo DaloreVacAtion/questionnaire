@@ -29,7 +29,7 @@ class Poll(models.Model):
         verbose_name_plural = 'Опросы'
         ordering = ['-created_at', 'title']
         # indexes = [
-        #     GinIndex(OpClass(Upper('title'), name='gin_trgm_ops'), name='title_upper_gin_index'),  # индекс для icontains
+        #     GinIndex(OpClass(Upper('title'), name='gin_trgm_ops'), name='title_gin_upper_index')  # icontains index
         # ]
 
     def __str__(self):

@@ -3,11 +3,12 @@ import logging
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 from django.views import View
+from django.views.generic import TemplateView
 
-from account.forms import RegisterUserForm
-from account.models import User
+from account.forms import RegisterUserForm, LoginUserForm
 
 logger = logging.getLogger('views')
 
@@ -18,41 +19,12 @@ class HomePage(View):
         return render(request, 'base.html')
 
 
-class LoginView(View):
-
-    def get(self, request):
-        if request.user.is_authenticated:
-            return redirect('home')
-        return render(request, 'registration/login.html')
-
-    def post(self, request):
-        username = request.POST['username']
-        password = request.POST['password']
-        logger.debug(f'user with username {username} try to connect')
-        if username == '' or password == '':
-            messages.success(request,
-                             ('Поля "username/password" не могут быть пустыми. Пожалуйста, попробуйте снова...'))
-            return redirect('account:login')
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            if user.is_staff:
-                logger.debug(f'user {username} connect to the admin area')
-                return redirect('/admin/')
-            next_page = request.POST.get('next', 'home')
-            logger.debug(f'find some next parameter {next_page}')
-            if next_page:
-                return redirect(request.POST.get('next', 'home'))
-            return redirect('home')
-        else:
-            if User.objects.filter(username=username).exists():
-                messages.success(request, ('Произошла ошибка входа. Пожалуйста, проверьте пароль...'))
-            else:
-                messages.success(request, ('Пользователя с таким username не существует'))
-            return redirect('account:login')
+class AccountLoginView(LoginView):
+    template_name = 'registration/login.html'
+    form_class = LoginUserForm
 
 
-class LogoutView(View):
+class AccountLogoutView(View):
 
     def get(self, request):
         logout(request)
@@ -82,11 +54,9 @@ class RegistrationView(View):
             return render(request, 'registration/registration.html', {'form': form})
 
 
-class PlayersListView(LoginRequiredMixin, View):
-    def get(self, request):
-        return render(request, 'players/players_list.html')
+class PlayersListView(LoginRequiredMixin, TemplateView):
+    template_name = 'players/players_list.html'
 
 
-class UserSettingsView(View):
-    def get(self, request):
-        return render(request, 'registration/settings.html')
+class UserSettingsView(LoginRequiredMixin, TemplateView):
+    template_name = 'registration/settings.html'

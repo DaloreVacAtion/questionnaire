@@ -98,7 +98,7 @@ def LOGG_SETTINGS(BASE_DIR):
             },
             'views': {
                 'level': 'DEBUG',
-                'handlers': ['console', 'all', 'errors', 'api'],
+                'handlers': ['console', 'all', 'errors', 'views'],
                 'propagate': True,
             },
         }

@@ -157,7 +157,7 @@ STATICFILES_DIRS = [
 ]
 
 LOGIN_URL = '/account/login/'
-LOGIN_REDIRECT_URL = ''
+LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = '/account/login/'
 
 # Default primary key field type
